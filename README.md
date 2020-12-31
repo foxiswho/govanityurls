@@ -13,7 +13,7 @@ Go Vanity URLs is a simple app that allows you to set custom import paths for yo
 Install go vanity urls:
 
 ```
-$ go get github.com/bigwhite/govanityurls
+$ go get github.com/foxiswho/govanityurls
 ```
 
 Edit `vanity.yaml` to add any number of git repos. E.g., `tonybai.com/gowechat` will
@@ -30,7 +30,7 @@ You can add as many rules as you wish.
 
 >Before run the app, point your custom domain to the vps ip where govanityurl deployed. 
 
-govanityurls listens on address "0.0.0.0:8080" as default. It is better to use a reverse proxy to transfer the real go get requests because you may have other services under your domain. Below is a nginx config example on ubuntu 16.04:
+govanityurls listens on address "0.0.0.0:8080" (or custom port) as default. It is better to use a reverse proxy to transfer the real go get requests because you may have other services under your domain. Below is a nginx config example on ubuntu 16.04:
 
 ```
 // /etc/nginx/conf.d/default.conf
@@ -60,8 +60,12 @@ server {
 Run the app:
 
 ```
-$ cd $(go env GOPATH)/src/github.com/bigwhite/govanityurls
+$ cd $(go env GOPATH)/src/github.com/foxiswho/govanityurls
 $ govanityurls -host tonybai.com
+
+OR
+
+$ govanityurls -host tonybai.com -port 8080
 ```
 
 That's it! You can use `go get` to get the package from your custom domain.

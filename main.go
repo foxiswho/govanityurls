@@ -7,12 +7,14 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"gopkg.in/yaml.v2"
 )
 
 var host string
+var port uint64
 
 var m map[string]struct {
 	Repo    string `yaml:"repo,omitempty"`
@@ -21,6 +23,7 @@ var m map[string]struct {
 
 func init() {
 	flag.StringVar(&host, "host", "", "custom domain name, e.g. tonybai.com")
+	flag.Uint64Var(&port, "port", 0, "custom port, 8080")
 
 	vanity, err := ioutil.ReadFile("./vanity.yaml")
 	if err != nil {
@@ -89,5 +92,13 @@ func main() {
 	}
 
 	http.Handle("/", http.HandlerFunc(handle))
-	log.Fatalln(http.ListenAndServe("0.0.0.0:8080", nil))
+	//default port
+	if port <1 {
+		port = 8080
+	}
+	//max port
+	if port > 65535{
+		port = 65535
+	}
+	log.Fatalln(http.ListenAndServe("0.0.0.0:"+strconv.FormatUint(port,10), nil))
 }
